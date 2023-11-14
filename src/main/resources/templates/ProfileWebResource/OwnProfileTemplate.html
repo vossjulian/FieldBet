@@ -1,0 +1,14 @@
+<!-- Author: Patrick Felschen -->
+<!DOCTYPE html>
+<html>
+  {#include head} {/}
+  <body>
+    {#include authnavbar} {/include} {#if isAdmin} {#include adminbar} {/} {/if}
+    <div class="container">
+      <h1>Punkte: {profile.points}</h1>
+      <h3>{profile.firstname} {profile.lastname}</h3>
+      <a button href="/web/v1/logout" class="btn btn-primary">Abmelden</a>
+    </div>
+    {#include scripts} {/}
+  </body>
+</html>

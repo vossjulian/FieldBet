@@ -1,0 +1,147 @@
+<!-- Author: Patrick Felschen -->
+<!DOCTYPE html>
+<html>
+  {#include head} {/}
+  <body>
+    {#include authnavbar} {/}
+    <!-- Modal -->
+    <div class="modal fade" id="matchModal" tabindex="-1" aria-labelledby="matchModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="matchModalLabel">Spiel erstellen</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="/web/v1/matches" method="post">
+            <div class="modal-body row g-3">
+              <div class="mb-3 col-md-12">
+                <label for="startDateTime" class="form-label">Start</label>
+                <input type="datetime-local" class="form-control" id="startDateTime" name="startDateTime" required />
+              </div>
+              <div class="mb-3 col-md-12">
+                <label for="team1Id" class="form-label">Team 1</label>
+                <select id="team1Id" name="team1Id" class="form-select" aria-label="Team wählen..." required>
+                  <option value="" selected>Team wählen...</option>
+                  {#for team in teams}
+                  <option value="{team.id}">{team.alias} - {team.name}</option>
+                  {/for}
+                </select>
+              </div>
+              <div class="mb-3 col-md-12">
+                <label for="team2Id" class="form-label">Team 2</label>
+                <select id="team2Id" name="team2Id" class="form-select" aria-label="Team wählen..." required>
+                  <option value="" selected>Team wählen...</option>
+                  {#for team in teams}
+                  <option value="{team.id}">{team.alias} - {team.name}</option>
+                  {/for}
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+              <button type="submit" class="btn btn-primary">Fertig</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {#for match in matches}
+    <!-- Modal -->
+    <div class="modal fade" id="matchModal{match.id}" tabindex="-1" aria-labelledby="matchModal{match.id}Label" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="matchModalLabel">Spiel bearbeiten</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="/web/v1/matches/{match.id}" method="post">
+            <div class="modal-body row g-3">
+              <div class="mb-3 col-md-12">
+                <label for="startDateTime" class="form-label">Start</label>
+                <input type="datetime-local" class="form-control" id="startDateTime" name="startDateTime" value="{match.startDateTime}" required />
+              </div>
+              <div class="mb-3 col-md-10">
+                <label for="team1" class="form-label">Team 1</label>
+                <input type="text" class="form-control" id="team1" value="{match.team1.name}" disabled />
+              </div>
+              <div class="mb-3 col-md-2">
+                <label for="goalsTeam1" class="form-label">Tore</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="goalsTeam1"
+                  name="goalsTeam1"
+                  min="0"
+                  max="99"
+                  placeholder="0"
+                  value="{match.goalsTeam1}"
+                  required
+                />
+              </div>
+              <div class="mb-3 col-md-10">
+                <label for="team1" class="form-label">Team 2</label>
+                <input type="text" class="form-control" id="team1" value="{match.team2.name}" disabled />
+              </div>
+              <div class="mb-3 col-md-2">
+                <label for="goalsTeam2" class="form-label">Tore</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="goalsTeam2"
+                  name="goalsTeam2"
+                  min="0"
+                  max="99"
+                  placeholder="0"
+                  value="{match.goalsTeam2}"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <input class="form-check-input" type="checkbox" id="isFinished" name="isFinished" value="isFinished" {#if match.isFinished} checked
+                {/if} />
+                <label class="form-check-label" for="flexCheckDefault"> Spiel beendet? </label>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+              {#if !match.isFinished}
+              <a button href="/web/v1/matches/{match.id}/delete" type="button" class="btn btn-danger">Löschen</a>
+              <button type="submit" class="btn btn-primary">Fertig</button>
+              {/if}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {/for}
+
+    <div class="container">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#matchModal">Spiel erstellen</button>
+
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Start Zeit</th>
+            <th scope="col">Team</th>
+            <th scope="col">Tore</th>
+            <th scope="col">Team</th>
+            <th scope="col">Tore</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#for match in matches}
+          <tr data-bs-toggle="modal" data-bs-target="#matchModal{match.id}">
+            <td>{match.startDateTime.formatDateTime} {#if match.isFinished} - beendet {/if}</td>
+            <td>{match.team1.name}</td>
+            <td>{match.goalsTeam1}</td>
+            <td>{match.team2.name}</td>
+            <td>{match.goalsTeam2}</td>
+          </tr>
+          {/for}
+        </tbody>
+      </table>
+    </div>
+    {#include scripts} {/}
+  </body>
+</html>

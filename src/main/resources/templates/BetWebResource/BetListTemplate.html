@@ -1,0 +1,89 @@
+<!-- Author: Patrick Felschen -->
+<!DOCTYPE html>
+<html>
+  {#include head} {/}
+  <body>
+    {#if isAuthenticated} {#include authnavbar}{/include} {#else} {#include navbar}{/include} {/if} {#if !bets.isEmpty}
+    <div class="album pb-5">
+      <div class="container">
+        <h2 class="pb-3">Tipps</h2>
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-3">
+          {#for bet in bets}
+          <div class="col">
+            <div class="card shadow-sm">
+              <form action="/web/v1/bets/{bet.id}" method="post">
+                <div class="card-body">
+                  <div class="row g-3">
+                    <div class="mb-3 col-md-6">
+                      <h5>
+                        <label for="goalsTeam1" class="form-label"
+                          >{bet.match.team1.name} {#if !bet.match.startDateTime.isInFuture} : {bet.match.goalsTeam1} {/if}</label
+                        >
+                      </h5>
+                      <input {#if !bet.match.startDateTime.isInFuture} disabled {/if} type="number" class="form-control" id="goalsTeam1"
+                      name="goalsTeam1" min="0" max="99" placeholder="0" value="{bet.goalsTeam1}" required />
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <h5>
+                        <label for="goalsTeam2" class="form-label"
+                          >{bet.match.team2.name} {#if !bet.match.startDateTime.isInFuture} : {bet.match.goalsTeam2} {/if}</label
+                        >
+                      </h5>
+                      <input {#if !bet.match.startDateTime.isInFuture} disabled {/if} type="number" class="form-control" id="goalsTeam2"
+                      name="goalsTeam2" min="0" max="99" placeholder="0" value="{bet.goalsTeam2}" required />
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      {#if bet.match.startDateTime.isInFuture}<button type="submit" class="btn btn-sm btn-outline-secondary">Bearbeiten</button>{/if}
+                    </div>
+                    <small class="text-muted">{bet.match.startDateTime.formatDateTime}</small>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          {/for}
+        </div>
+      </div>
+    </div>
+    {/if} {#include scripts} {/} {#if !matches.isEmpty}
+    <div class="album pb-5">
+      <div class="container">
+        <h2 class="pb-3">Spiele</h2>
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-3">
+          {#for match in matches}
+          <div class="col">
+            <div class="card shadow-sm">
+              <form action="/web/v1/bets" method="post">
+                <div class="card-body">
+                  <div class="row g-3">
+                    <input hidden type="number" id="matchId" name="matchId" min="0" value="{match.id}" required />
+                    <div class="mb-3 col-md-6">
+                      <h5><label for="goalsTeam1" class="form-label">{match.team1.name}</label></h5>
+                      <input {#if !match.startDateTime.isInFuture} disabled value="{match.goalsTeam1}" {/if} type="number" class="form-control"
+                      id="goalsTeam1" name="goalsTeam1" min="0" max="99" value="" required />
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <h5><label for="goalsTeam2" class="form-label">{match.team2.name}</label></h5>
+                      <input {#if !match.startDateTime.isInFuture} disabled value="{match.goalsTeam2}" {/if} type="number" class="form-control"
+                      id="goalsTeam2" name="goalsTeam2" min="0" max="99" required />
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      {#if match.startDateTime.isInFuture} <button type="submit" class="btn btn-sm btn-primary">Tippen</button> {/if}
+                    </div>
+                    <small class="text-muted">{match.startDateTime.formatDateTime}</small>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          {/for}
+        </div>
+      </div>
+    </div>
+    {/if}
+  </body>
+</html>

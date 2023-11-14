@@ -1,0 +1,48 @@
+<!-- Author: Patrick Felschen -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="matchModalLabel">Registrieren</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/web/v1/users/signup" method="post">
+        <div class="modal-body row g-3">
+          <div class="mb-3 col-md-12">
+            <label for="firstname" class="form-label">Vorname</label>
+            <input type="text" class="form-control" id="firstname" name="firstname" minlength="1" maxlength="50" placeholder="Max" required />
+          </div>
+          <div class="mb-3 col-md-12">
+            <label for="lastname" class="form-label">Nachname</label>
+            <input type="text" class="form-control" id="lastname" name="lastname" minlength="1" maxlength="50" placeholder="Musterman" required />
+          </div>
+          <div class="mb-3 col-md-12">
+            <label for="username" class="form-label">Username / E-Mail</label>
+            <input type="text" class="form-control" id="username" name="username" minlength="1" maxlength="50" placeholder="mmustermann" required />
+          </div>
+          <div class="mb-3 col-md-12">
+            <label for="password" class="form-label">Passwort</label>
+            <input type="password" class="form-control" id="password" name="password" minlength="8" maxlength="50" placeholder="" required />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+          <button type="submit" class="btn btn-primary">Fertig</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+      <span class="fs-4">FieldBet</span>
+    </a>
+
+    <ul class="nav nav-pills">
+      <li class="nav-item"><a href="/web/v1/bets" class="nav-link">Tippen</a></li>
+      <li class="nav-item"><a href="/web/v1/profiles/me" class="nav-link">Anmelden</a></li>
+      <li class="nav-item"><a href="#" data-bs-toggle="modal" data-bs-target="#signupModal" class="nav-link">Registrieren</a></li>
+    </ul>
+  </header>
+</div>

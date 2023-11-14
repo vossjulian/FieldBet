@@ -1,0 +1,29 @@
+<!-- Author: Patrick Felschen -->
+<!DOCTYPE html>
+<html>
+  {#include head} {/}
+  <body>
+    {#include authnavbar} {/}
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Punkte</th>
+            <th scope="col">Vorname</th>
+            <th scope="col">Nachname</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#for profile in profiles}
+          <tr>
+            <td>{profile.points}</td>
+            <td>{profile.firstname}</td>
+            <td>{profile.lastname}</td>
+          </tr>
+          {/for}
+        </tbody>
+      </table>
+    </div>
+    {#include scripts} {/}
+  </body>
+</html>

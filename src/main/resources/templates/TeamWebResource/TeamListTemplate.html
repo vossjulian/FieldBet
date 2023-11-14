@@ -1,0 +1,107 @@
+<!-- Author: Patrick Felschen -->
+<!DOCTYPE html>
+<html>
+  {#include head} {/}
+  <body>
+    {#include authnavbar} {/}
+    <!-- Creation Modal -->
+    <div class="modal fade" id="teamModal" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="matchModalLabel">Team erstellen</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="/web/v1/teams" method="post">
+            <div class="modal-body row g-3">
+              <div class="mb-3 col-md-12">
+                <label for="startDateTime" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" minlength="1" maxlength="50" placeholder="1. FC Musterstadt" required />
+              </div>
+              <div class="mb-3 col-md-12">
+                <label for="goalsTeam2" class="form-label">Alias</label>
+                <input type="text" class="form-control" id="alias" name="alias" minlength="3" maxlength="3" placeholder="ABC" required />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+              <button type="submit" class="btn btn-primary">Fertig</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {#for team in teams}
+    <!-- Update Modal -->
+    <div class="modal fade" id="teamModal{team.id}" tabindex="-1" aria-labelledby="teamModal{team.id}Label" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="matchModalLabel">Team bearbeiten</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="/web/v1/teams/{team.id}" method="post">
+            <div class="modal-body row g-3">
+              <div class="mb-3 col-md-12">
+                <label for="startDateTime" class="form-label">Start</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  minlength="1"
+                  maxlength="50"
+                  placeholder="1. FC Musterstadt"
+                  value="{team.name}"
+                  required
+                />
+              </div>
+              <div class="mb-3 col-md-12">
+                <label for="goalsTeam2" class="form-label">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="alias"
+                  name="alias"
+                  minlength="3"
+                  maxlength="3"
+                  placeholder="ABC"
+                  value="{team.alias}"
+                  required
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+              <a button href="/web/v1/teams/{team.id}/delete" type="button" class="btn btn-danger">Löschen</a>
+              <button type="submit" class="btn btn-primary">Fertig</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {/for}
+    <div class="container">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#teamModal">Team erstellen</button>
+
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Alias</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#for team in teams}
+          <tr data-bs-toggle="modal" data-bs-target="#teamModal{team.id}">
+            <td>{team.name}</td>
+            <td>{team.alias}</td>
+          </tr>
+          {/for}
+        </tbody>
+      </table>
+    </div>
+    {#include scripts} {/}
+  </body>
+</html>
